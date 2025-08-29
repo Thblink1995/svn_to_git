@@ -199,24 +199,6 @@ git fetch --prune origin || exit 1
 traiter_branches_svn_vs_origin
 git checkout master
 
-# s'exécute uniquement si le repo cloné est vindilis segur, et si c'est la première fois
-if [[ $NEW == "true" ]] && [[ $TEMP != "a" ]];  then
-        if git show-ref --verify --quiet refs/heads/segur; then
-        git checkout segur 
-        if git show-ref --verify --quiet refs/heads/master; then
-            if [ "$(git rev-parse segur)" != "$(git rev-parse master)" ]; then
-                echo "La branche 'master' existait, différente de 'segur' → elle sera supprimée."
-                git branch -D master 
-            else
-
-                echo "'master' et 'segur' pointent déjà sur le même commit, pas de suppression."
-            fi
-        fi
-    fi
-    echo "La branche 'segur' devient 'master'" 
-    git branch -M segur master
-fi
-
 echo "Script terminé."
 
 end=$(date +%s)
